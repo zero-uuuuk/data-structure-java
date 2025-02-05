@@ -1,0 +1,33 @@
+Lecture3 - LinkedList
+
+1. 개요
+- 기존의 Array만 사용하는 건 단점이 있다.
+  - Dynamic한 size 변경의 어려움.
+  - 연속적인 Memory의 사용.
+- 이 두 단점을 보완하기 위해 LinkedList가 있다.
+
+2. 주요 특징 및 Method
+- 주요 특징은 'Node' based Data Structure이다.
+- 데이터를 추가할 때도 Node를 추가하고, 삭제할 때도 Node를 삭제한다.
+- 각 Node는 자기 자신의 값과 Next Node를 지칭하는 Pointer를 Member로 가진다.
+- 시작 Node는 Head 로 따로 지칭한다.
+
+- Method(실제로 생각해보며 구현하면 쉽다.)
+  - (1). Traversing
+  - (2). Search
+  - (3). Insert(x)
+    - 제일 앞에 Insert 할 경우: x.next 설정 후 head 변경
+    - 마지막: 마지막 것의 next = x
+    - 중간: x.next = temp로 빼주기
+  - (4). Delete(x)
+
+- Ref)
+  - Doubly Linked List
+    - 기존 LinkedList가 next만 가졌다면, 이는 prev node 또한 동시에 지칭한다.
+    - Method 구현도 기존과 동일하게 순서를 잘 고려할 것.
+
+  - Java의 LinkedList
+    - 자바는 List<String> list = new LinkedList<>(); 로 Doubly LinkedList를 내장하고 있다.
+    - 주요 add, delete, find, size() 및 Iterator 사용도 가능하다.
+    - 추가로 C와 다르게 JVM이 쓰레기 메모리를 알아서 Malloc한다.
+

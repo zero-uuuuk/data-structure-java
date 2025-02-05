@@ -1,0 +1,206 @@
+Lecture1 - ADT와 Recursive algorithm
+
+1. ADT
+- ADT(Abstract data type)은 Data structure의 일종의 Guide line이다.
+- 예를 들어, Heap이라는 ADT 즉 Guideline이 주어지면 이를 array로 구현한다.
+- 또는 LinkedList라는 ADT가 주어지면, 해당 ADT의 조건을 만족하는 data structure을 list로 구현한다.
+- ADT에 크게 4가지를 서술해야 한다.
+  - (1). function name
+  - (2). argument types
+  - (3). result types
+  - (4). description of what a function does
+
+2. Recursive Algorithm
+- 특정 문제가 주어졌을 때, sub-problem 으로 쪼개서 풀 경우 용이하다.
+- 조건은
+  - (1). Base case(Termination)
+  - (2). Recursive case 이 두 경우를 나누는 것이다.
+- 대표적인 예시로는 Fibonacci Sequence, Factorial, Hanoi Tower 문제가 있다.
+
+Lecture2 - Time Complexity와 Space Complexity
+
+1. Space Complexity
+- 알고리즘의 메모리 사용량을 평가한다.
+- Input data의 size에 관계없이 알고리즘 자체의 memory space만 고려해야 한다.
+
+2. Time Complexity
+- 알고리즘의 시간 복잡도를 평가한다.
+- 컴퓨터의 Hardware(RAM, CPU), Input data에 상관없이 걸리는 시간을 체크한다.
+  (1). Big-Oh
+  - 걸리는 시간의 '상한선'을 나타낸다.
+  - 예를 들어 2n+7만큼 걸리는 알고리즘은 O(n)의 시간 복잡도를 가진다.
+  - 2n+7 <= cn의 관계 중 이를 만족하는 c와 n(0)을 찾아 증명한다.
+  (2). Big-Omega
+  - 걸리는 시간의 '하한선'을 나타낸다.
+  - 예를 들어 2n+7만큼 걸리는 알고리즘은 Omega(n)의 시간 복잡도를 가진다.
+  (3). Big-Theta
+  - 빅오와, 빅오메가의 조건을 모두 만족한다.
+
+- 일반적으로 알고리즘의 '최악의 경우(상한선)'를 고려하며, Big-Oh를 사용한다.
+
+Lecture3 - LinkedList
+
+1. 개요
+- 기존의 Array만 사용하는 건 단점이 있다.
+  - Dynamic한 size 변경의 어려움.
+  - 연속적인 Memory의 사용.
+- 이 두 단점을 보완하기 위해 LinkedList가 있다.
+
+2. 주요 특징 및 Method
+- 주요 특징은 'Node' based Data Structure이다.
+- 데이터를 추가할 때도 Node를 추가하고, 삭제할 때도 Node를 삭제한다.
+- 각 Node는 자기 자신의 값과 Next Node를 지칭하는 Pointer를 Member로 가진다.
+- 시작 Node는 Head 로 따로 지칭한다.
+
+- Method(실제로 생각해보며 구현하면 쉽다.)
+  - (1). Traversing
+  - (2). Search
+  - (3). Insert(x)
+    - 제일 앞에 Insert 할 경우: x.next 설정 후 head 변경
+    - 마지막: 마지막 것의 next = x
+    - 중간: x.next = temp로 빼주기
+  - (4). Delete(x)
+
+- Ref)
+  - Doubly Linked List
+    - 기존 LinkedList가 next만 가졌다면, 이는 prev node 또한 동시에 지칭한다.
+    - Method 구현도 기존과 동일하게 순서를 잘 고려할 것.
+
+  - Java의 LinkedList
+    - 자바는 List<String> list = new LinkedList<>(); 로 Doubly LinkedList를 내장하고 있다.
+    - 주요 add, delete, find, size() 및 Iterator 사용도 가능하다.
+    - 추가로 C와 다르게 JVM이 쓰레기 메모리를 알아서 Malloc한다.
+
+Lecture 4 - Stack and Queue
+
+1. Stack
+- First In, Last Out으로 작동하는 ordered list (일종의 접시 쌓기라고 생각)
+- 선언 및 Method in Java
+  - 선언 : Stack<dataType> stack = new Stack<>();
+  - Method
+    - (1). push(): stack의 뒤에서 삽입
+    - (2). pop(): stack의 맨 뒤를 삭제 후 return
+    - (3). peek(): stack의 맨 뒤를 return
+    - (4). empty(): stack의 empty 여부를 return
+- 예시
+  - Recursive function의 call stack
+  - Text editor에서 "Undo" function 실행시 stack 순으로 역행.
+  - Web brower에서 방문 기록 쌓을 시.
+  - 수학표현에서 괄호 매칭 시.
+  - HTML에서 태그 매칭 시.
+
+2. Queue
+- First In, First out으로 작동하는 ordered list (일종의 대기 줄이라고 생각)
+- 선언 및 Method in java
+  - 선언 : Queue<dataType> queue = new Queue<>();
+  - Method
+    - (1). offer(): queue의 뒤에서 삽입
+    - (2). poll(): queue의 head를 제거하고 return
+    - (3). peek(): queue의 head를 return
+    - (4). PriorityQueue도 사용 가능.
+- 예시
+  - Printing documents
+  - Message queues
+
+3. 활용
+- Stack, Queue의 구현 방법은 다양하나, GenericCollection에서 쓰는 게 좋겠지?
+- (1). Recongizing Palindromes: queue와 stack에 각각 저장 후, queue는 뒤에서, stack은 앞에서 비교
+- (2). Searching Flight Map in graph: Reachable한 목적지를 queue, stack에 저장 후 제거하면서 추가 reachable 고려.
+
+Lecture 5 - Binary Tree
+
+1. Tree Basic
+- Terminology
+    - Root, Edge, Parent/Child/Siblings, Leaf, Internal, Ancestor/Descendant
+    - Subtree: 한 트리내에 작은 트리
+    - Path: Node A부터 Node B까지의 길, Length Of Path: 해당 길 내 Edge의 개수
+    - Depth(level): Root=0부터 Edge 하나를 지날 때마다 +1
+
+- Usage
+    - File System
+    - Inheritance relations between classes
+    - Organization of corporation
+
+2. Binary Tree
+- 특징
+    - Child가 0개, 1개 또는 2개임.
+    - Complete binary tree: Child가 Left side에서 끝남.
+    - Full binary tree: Child의 갯수가 0개 또는 2개임.
+    - Level i에서 최대 node 갯수 :  2^i
+    - Depth h에서 최대 총 node 갯수 : 2^(h+1)-1
+    - Complete binary tree, depth h 일때 가능한 Node 갯수 :  2^h ~ 2^(h+1)-1
+    - 노드가 n개 있을 때, 최소 높이 : 이는 높이 h일때 최대 Node 갯수와 같음 -> h = log2(n+1)-1
+    - Successor: 기준 노드(root) 바로 다음으로 큰 수(Right tree의 가장 왼쪽)
+    - Predecessor: 기준 노드(root) 바로 다음으로 작은 수(Left tree의 가장 오른쪽)
+- 구현 방법
+    (1). Node 위주 표현: 한 node는 left child, right child, parent, key를 Class member로 가짐.
+    (2). Array와 Index 위주 표현: 하나의 Array가 주어졌을 때, Index(2n+1, 2n+2)로 자식 관계를 나타냄.
+        -> 노드 간 Link 가 필요 없음.
+        -> 후에 Heap 할 때 적용.
+
+3. Binary Search Tree
+- 특징
+    - Left child 는 기준 노드(root)보다 항상 작음.
+    - Right child 는 기준 노드(root)보다 항상 큼.
+
+- Method
+    최악의 경우(한쪽으로 몰리는 경우, skew)를 제외하고 평균적(Balanced)으로 O(log n)이 걸림.
+    (1). Find Min/Max: 계속 left/right node로 이동. 더 이상 이동할 수 없으면 return.
+    (2). Search:
+        - Root부터 시작해서 좌/우 child 값이랑 비교하면서 이동
+        - 같은 걸 찾을 시 return, 못 찾을 시 none
+    (3). Insert:
+        - Search를 이용해 들어갈 위치 파악
+        - 위치와 값을 비교한 후 넣기
+    (4). Delete:
+        - No child: Just remove
+        - One child: remove and replace it
+        - Two child:
+            - 삭제 후 Successor로 교체
+            - Successor가 Right child가 있었을 경우, 기존 Successor 자리에 넣기.
+
+4. Tree Traversal
+- Level Order, PreOrder Traversal, Inorder, Postorder가 있음.
+- Point는 'Recursive'하게 자식 Node를 거치며 출력하는 것.
+- Time complexity: O(n) -> Node 수 만큼 반복
+
+Lecture6 - AVL Tree
+
+1. 등장 배경
+- 기존 Binary Tree
+    - Insert, Delete 작업을 여러 번 수행 시, Tree의 Balance가 무너지는 현상 발생.
+    - 이를 'Skew tree'라고 말하며, Insert, Delete, Search 등의 Time comeplexity는 O(log n)으로 유지되지 못함.
+
+- AVL Tree의 조건
+    - Binary Search Tree
+    - 모든 노드에 대해서 -1 <= leftTree.height - rightTree.height <= 1 일 것.
+    - Height h가 주어질 때, 가능한 노드를 꽉 채워서 Tree를 만들어야된다는 말과 같음.
+
+2. 구현
+- 기본 개념: Rotation
+    - Insert, Delete 등으로 Balance가 무너질 경우, Rotation(Trinode Restructuring)으로 이를 해결
+    - (1). 최초의 Balance가 발생한 Node: z, z의 child 중 높이가 더 큰 Node: y, y의 child 중 높이가 더 큰 Node: x(높이가 같을 경우 y의 방향을 따라간 것)로 지정
+    - (2). Insert / Delete 이후 root.left / right height를 분석 후 LL, LR, RR, RL Rotation 적용.
+    - (3). Root의 Height update
+
+
+3. 분석 조건
+- 이때 root = z
+- Insert
+    (1). root.left.height - root.right.height > 1: Left tree가 더 높을 경우 ( y = Left)
+        - key < root.left.key: 새로 Insert된 key가 또 Left tree로 갔을 경우 -> LL Rotation ( x = Left)
+        - key > root.left.key: 새로 Insert된 key가 Right tree로 갔을 경우 -> LR Rotation ( x = Right)
+    (2). root.right.height - root.left.height > 1: Right tree가 더 높을 경우 ( y = Right)
+            - key < root.right.key: 새로 Insert된 key가 Left tree로 갔을 경우 -> RL Rotation ( x = Left)
+            - key > root.right.key: 새로 Insert된 key가 또 Right tree로 갔을 경우 -> RR Rotation ( x = Right)
+
+- Delete
+    (1). root.left.height - root.right.height > 1: Left tree가 더 높을 경우 ( y = Left)
+        - root.left.left.height - root.left.right.height >= 0 : 하위 Left tree가 더 높을 경우 -> LL Rotation( x = Left)
+        - else : 하위 Right tree가 더 높을 경우 -> LR Rotation( x = Right)
+
+    (2). root.right.height - root.left.height > 1: Right tree가 더 높을 경우 ( y = Right)
+        - root.right.right.height - root.right.left.height >= 0 : 하위 Right tree가 더 높을 경우 -> RR Rotation( x = Right)
+        - else : 하위 Left tree가 더 높을 경우 -> RL Rotation( x = Left)
+
+

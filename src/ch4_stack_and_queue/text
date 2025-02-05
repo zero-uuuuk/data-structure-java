@@ -1,0 +1,36 @@
+Lecture 4 - Stack and Queue
+
+1. Stack
+- First In, Last Out으로 작동하는 ordered list (일종의 접시 쌓기라고 생각)
+- 선언 및 Method in Java
+  - 선언 : Stack<dataType> stack = new Stack<>();
+  - Method
+    - (1). push(): stack의 뒤에서 삽입
+    - (2). pop(): stack의 맨 뒤를 삭제 후 return
+    - (3). peek(): stack의 맨 뒤를 return
+    - (4). empty(): stack의 empty 여부를 return
+- 예시
+  - Recursive function의 call stack
+  - Text editor에서 "Undo" function 실행시 stack 순으로 역행.
+  - Web brower에서 방문 기록 쌓을 시.
+  - 수학표현에서 괄호 매칭 시.
+  - HTML에서 태그 매칭 시.
+
+2. Queue
+- First In, First out으로 작동하는 ordered list (일종의 대기 줄이라고 생각)
+- 선언 및 Method in java
+  - 선언 : Queue<dataType> queue = new Queue<>();
+  - Method
+    - (1). offer(): queue의 뒤에서 삽입
+    - (2). poll(): queue의 head를 제거하고 return
+    - (3). peek(): queue의 head를 return
+    - (4). PriorityQueue도 사용 가능.
+- 예시
+  - Printing documents
+  - Message queues
+
+3. 활용
+- Stack, Queue의 구현 방법은 다양하나, GenericCollection에서 쓰는 게 좋겠지?
+- (1). Recongizing Palindromes: queue와 stack에 각각 저장 후, queue는 뒤에서, stack은 앞에서 비교
+- (2). Searching Flight Map in graph: Reachable한 목적지를 queue, stack에 저장 후 제거하면서 추가 reachable 고려.
+

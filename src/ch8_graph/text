@@ -1,0 +1,69 @@
+1. 그래프의 사용 예시
+- Social Network, Traffic(Subway Maps), Computer Networks, Protein-Protein Interaction
+- Chemical Compounds, Networks of Neurons
+
+2. 그래프의 활용 예시
+- The shortest path problem: 타겟에게 도달하기 위한 최소 hops
+- Subgraph matching: 그래프 내 패턴 파악
+- Connected components: 특정 Community에 속해있는지 여부
+- Reachability: Node간 이웃성 파악
+
+3. Terminology
+- Basic: Vertex, Edge, Directed/Undirected, Adjacent(인접한), degree(Node와 연결된 Edge의 수)
+- Important: Cycle, Simple(Path 내 중복된 노드 x), Directed(Directed Graph에서 모든 Node로 접근 가능할 때), DAG(Directed Acyclic Graph!!)
+
+4. Complexity
+- Time Complexity는 Vertex(V), Edge(E)에 의존적임 + Sparse/Dense의 여부
+
+5. Represent Graph
+(1). Adjacency Matrix
+- N개의 vertex가 있을 때, n by n matrix로 그래프 표현
+- 만약 edge가 있을 경우 1, else 0
+- `Is Edge` 확인 시 Time Complexity가 유리함.
+
+(2). Adjacency List
+- N개의 vertex가 있을 때, 각 vertex별 adjacent vertex를 2D Array(LinkedList)로 표현.
+- `Configure All neighbors/Find All Edges`에 Time complexity가 유리함.
+- Generally Recommended.
+
+6. Graph Traversals
+(1). 필요성
+- Find a particular vertex
+- Check whether two vertices are connected
+- Find path(+Single shortest path problem)
+- Check cycle
+
+(2). 종류
+i. Depth-First Search(DFS)
+- Searches deeper in the graph whenever possible. (이웃한 vertex를 확인하고 그 vertex로 이동함.)
+- Recursive / Iterative(Use stack) 두 방법으로 구현.
+
+ii Breath-First Search(BFS)
+- Explores the distance from source to each reachable vertex. (이웃을 하나씩 차례로 쌓고, 먼저 쌓인 것부터 처리)
+- Iterative(Use Queue) 로 구현. 중요한 건 가까운 vertex가 순차적으로 처리됌.
+
+7. Topological Sort
+(1). 조건
+- Directed Acyclic Graph일 때, Edge의 방향에 맞춰서 Vertex들을 나열함.
+- Linear ordering of all the vertices in V such that if G contains an edge(u, v), 'then u appears before v in the ordering'
+- Can be more than two ordering case.
+
+(2). 구현
+- In-coming edge가 0인 vertex를 queue에 넣기.
+- queue를 하나씩 poll하면서, 해당 vertex를 In-coming으로 받는 vertex에 대해 --In-coming.
+- poll되는 vertex들은 list에 따로 저장.
+
+(3). Time Complexity
+- O(V + E)
+
+8. Single-Source Shortest Path Problem
+- 이거 하나만으로 Single Destination, Single-pair, All-pairs 다 고려 가능.
+- Weighted(Not negative) Directed Graph에서 적용.
+- Dijkstra's Algorithm
+    Steps.
+    (0). Distance 기반 Min-heap 생성: Source를 제외한 모든 거리를 무한대로 설정. + Extract Source
+    (1). Adjacent Vertex Search
+    (2). 해당 vertices에 대해 distance update(=relax, predecessor saving), min-heapify
+    (3). Min vertex select(Extract Source)
+    Time Complexity
+    Extract Min을 V번 반복(v O(log v) + RELAX를 E번 반복(E O(log e))->  O(VlgV + ElgV)

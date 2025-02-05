@@ -1,0 +1,150 @@
+1. PriorityQueue
+(1). 특징
+- Queue처럼 pop(), peek()가 First Priority에서 작동하지만, Insert는 Natural Order에 따름.
+- 즉 Insert는 자유롭지만 Delete는 Queue랑 동일함.
+
+(2). Method
+- Insert(x): Insert x into the queue in some order
+- Maximum(x): Return Maximum(same as peek())
+- DeleteMax(x): Delete Maximum and return it(same as poll())
+
+(3). Application
+- Hospital Emergency System: 환자의 심각성에 따라 Insert, pop()은 심각성 순으로.
+- Job scheduling, Shortest path problem, Minimum spanning tree
+
+(4). 구현
+- Binary Heap:
+    Binary Tree와 비슷하지만, Max-heap이면 all parents > all childs, min-heap이면 all parents <all childs.
+    Complete Tree(Left End)의 성질도 지님.
+- Insert시 Natural Order에 따라 적정 위치에 삽입됌.(O(log n))
+- Delete시 Root에서 시행. (O(log n))
+
+2. Max-Heap
+(1). 특징
+- All Parents > All children의 관계.
+- Complete: 항상 left End.
+- Left, Right child의 대 . 소는 존재하지 않기에 Searching method는 없음.
+
+(2). 구현
+- Array의 Index 성질로 구현.
+- left(i) : return A[i*2];
+- right(i) : return A[i*2+1];
+- Parent(i) : return A[i/2]; 로 부모, 자식간 Link 표현
+
+(2)-1. 멤버 선언
+    // Declaration
+    int count = 0;
+    int capacity; // Element 갯수
+    int[] array; // Heap 표현에 사용할 Array
+
+    MaxHeap(int capacity){
+        this.capacity = capacity;
+        array = new int[capacity];
+    }
+
+(2)-2. INSERT
+    - 마지막 위치에 넣고
+    - 적절한 위치로 올라갈 수 있도록, parent와 비교하면서 Swap
+    // Insert: O(log n)
+    // Swap until parent is larger than key.
+    public void insert(int key){
+        int i = count;
+        int p = parent(i);
+
+        while(i > 0 && array[p] < key){ // Move one step.
+            array[i] = array[p];
+            i = p;
+            p = parent(i);
+        }
+
+        array[i] = key;
+        count++;
+    }
+
+(2)-3. DELETE
+    - HEAD를 제거 + return
+    - 마지막 노드를 헤드로 이동.
+    - 해당 노드가 적절한 위치를 찾도록 MAX-HEAPIFY()
+    // DELETE: O(log n)
+        public int deleteMax(){
+            int largest = array[0];
+            // First, Change Head with Last element
+            array[0] = array[count-1];
+            count--;
+
+            // Second, MaxHeapify from head
+            maxHeapify(0);
+
+            // Third, return largest that is head
+            return largest;
+        }
+
+(2)-3-1. MaxHeapify()
+    - child값과 비교한 뒤, 적절한 child와 swap
+    - 두 child 모두 클 경우, 더 큰 child와 swap
+    // MaxHeapify: O(log n)
+        public void maxHeapify(int i){
+            int l = left(i);
+            int r = right(i);
+            int largest;
+            int temp;
+
+            // First, Find Largest Index among (left child, right child, itself)
+            if(l < capacity && array[l] > array[i])
+                largest = l;
+            else
+                largest = i;
+            if(r < capacity && array[r] > array[largest])
+                largest = r;
+
+            // Second, Swap Largest and I-th element
+            if(largest!=i){
+                temp=array[i];
+                array[i] = array[largest];
+                array[largest] = temp;
+
+                // Third, Repeat
+                maxHeapify(largest);
+            }
+
+        }
+
+(2)-4. HeapSort()
+    - Array를 MaxHeap으로 만들기 O(nlog n) -> Actually O(n)
+        : heap.array에 Array 그대로 copy
+        : non-leaf node에 대해서 max-heapify
+        / BuildMaxHeap: O(n)
+            public void buildMaxHeap(int[] arr){
+
+                // Base: Init members.
+                array = new int[arr.length];
+                count = 0;
+
+                // First, Copy all content of arr
+                for(int i=0; i<arr.length; i++){
+                    array[i] = arr[i];
+                    count++;
+                }
+
+                // Second, For non-leaf nodes, Repeat maxHeapify
+                for(int i=(arr.length-1)/2; i>=0; i--)
+                    maxHeapify(i);
+            }
+
+    - MaxHeap을 n번 deleteMax하기 O(n log n)
+    - 코드에는 기존에 있는 Heap을 초기화해주기 위해 몇 줄 추가함.
+    // HeapSort: O(log n)
+        public int[] heapSort(int[] arr){
+            //First, make into max-heap
+            buildMaxHeap(arr);
+            int[] returnArr = new int[arr.length];
+
+            // Second, Delete head n times
+            for(int i=arr.length-1; i>=0; i--){
+                returnArr[i] = deleteMax();
+            }
+
+            // Third, Return it.
+            return returnArr;
+        }
+

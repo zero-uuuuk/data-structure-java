@@ -1,0 +1,97 @@
+Lecture 5 - Binary Tree
+
+1. Tree Basic
+- Terminology
+    - Root, Edge, Parent/Child/Siblings, Leaf, Internal, Ancestor/Descendant
+    - Subtree: 한 트리내에 작은 트리
+    - Path: Node A부터 Node B까지의 길, Length Of Path: 해당 길 내 Edge의 개수
+    - Depth(level): Root=0부터 Edge 하나를 지날 때마다 +1
+
+- Usage
+    - File System
+    - Inheritance relations between classes
+    - Organization of corporation
+
+2. Binary Tree
+- 특징
+    - Child가 0개, 1개 또는 2개임.
+    - Complete binary tree: Child가 Left side에서 끝남.
+    - Full binary tree: Child의 갯수가 0개 또는 2개임.
+    - Level i에서 최대 node 갯수 :  2^i
+    - Depth h에서 최대 총 node 갯수 : 2^(h+1)-1
+    - Complete binary tree, depth h 일때 가능한 Node 갯수 :  2^h ~ 2^(h+1)-1
+    - 노드가 n개 있을 때, 최소 높이 : 이는 높이 h일때 최대 Node 갯수와 같음 -> h = log2(n+1)-1
+    - Successor: 기준 노드(root) 바로 다음으로 큰 수(Right tree의 가장 왼쪽)
+    - Predecessor: 기준 노드(root) 바로 다음으로 작은 수(Left tree의 가장 오른쪽)
+- 구현 방법
+    (1). Node 위주 표현: 한 node는 left child, right child, parent, key를 Class member로 가짐.
+    (2). Array와 Index 위주 표현: 하나의 Array가 주어졌을 때, Index(2n+1, 2n+2)로 자식 관계를 나타냄.
+        -> 노드 간 Link 가 필요 없음.
+        -> 후에 Heap 할 때 적용.
+
+3. Binary Search Tree
+- 특징
+    - Left child 는 기준 노드(root)보다 항상 작음.
+    - Right child 는 기준 노드(root)보다 항상 큼.
+
+- Method
+    최악의 경우(한쪽으로 몰리는 경우, skew)를 제외하고 평균적(Balanced)으로 O(log n)이 걸림.
+    (1). Find Min/Max: 계속 left/right node로 이동. 더 이상 이동할 수 없으면 return.
+    (2). Search:
+        - Root부터 시작해서 좌/우 child 값이랑 비교하면서 이동
+        - 같은 걸 찾을 시 return, 못 찾을 시 none
+    (3). Insert:
+        - Search를 이용해 들어갈 위치 파악
+        - 위치와 값을 비교한 후 넣기
+    (4). Delete:
+        - No child: Just remove
+        - One child: remove and replace it
+        - Two child:
+            - 삭제 후 Successor로 교체
+            - Successor가 Right child가 있었을 경우, 기존 Successor 자리에 넣기.
+
+4. Tree Traversal
+- Level Order, PreOrder Traversal, Inorder, Postorder가 있음.
+- Point는 'Recursive'하게 자식 Node를 거치며 출력하는 것.
+- Time complexity: O(n) -> Node 수 만큼 반복
+
+Lecture6 - AVL Tree
+
+1. 등장 배경
+- 기존 Binary Tree
+    - Insert, Delete 작업을 여러 번 수행 시, Tree의 Balance가 무너지는 현상 발생.
+    - 이를 'Skew tree'라고 말하며, Insert, Delete, Search 등의 Time comeplexity는 O(log n)으로 유지되지 못함.
+
+- AVL Tree의 조건
+    - Binary Search Tree
+    - 모든 노드에 대해서 -1 <= leftTree.height - rightTree.height <= 1 일 것.
+    - Height h가 주어질 때, 가능한 노드를 꽉 채워서 Tree를 만들어야된다는 말과 같음.
+
+2. 구현
+- 기본 개념: Rotation
+    - Insert, Delete 등으로 Balance가 무너질 경우, Rotation(Trinode Restructuring)으로 이를 해결
+    - (1). 최초의 Balance가 발생한 Node: z, z의 child 중 높이가 더 큰 Node: y, y의 child 중 높이가 더 큰 Node: x(높이가 같을 경우 y의 방향을 따라간 것)로 지정
+    - (2). Insert / Delete 이후 root.left / right height를 분석 후 LL, LR, RR, RL Rotation 적용.
+    - (3). Root의 Height update
+
+
+3. 분석 조건
+- 이때 root = z
+- Insert
+    (1). root.left.height - root.right.height > 1: Left tree가 더 높을 경우 ( y = Left)
+        - key < root.left.key: 새로 Insert된 key가 또 Left tree로 갔을 경우 -> LL Rotation ( x = Left)
+        - key > root.left.key: 새로 Insert된 key가 Right tree로 갔을 경우 -> LR Rotation ( x = Right)
+    (2). root.right.height - root.left.height > 1: Right tree가 더 높을 경우 ( y = Right)
+            - key < root.right.key: 새로 Insert된 key가 Left tree로 갔을 경우 -> RL Rotation ( x = Left)
+            - key > root.right.key: 새로 Insert된 key가 또 Right tree로 갔을 경우 -> RR Rotation ( x = Right)
+
+- Delete
+    (1). root.left.height - root.right.height > 1: Left tree가 더 높을 경우 ( y = Left)
+        - root.left.left.height - root.left.right.height >= 0 : 하위 Left tree가 더 높을 경우 -> LL Rotation( x = Left)
+        - else : 하위 Right tree가 더 높을 경우 -> LR Rotation( x = Right)
+
+    (2). root.right.height - root.left.height > 1: Right tree가 더 높을 경우 ( y = Right)
+        - root.right.right.height - root.right.left.height >= 0 : 하위 Right tree가 더 높을 경우 -> RR Rotation( x = Right)
+        - else : 하위 Left tree가 더 높을 경우 -> RL Rotation( x = Left)
+
+
