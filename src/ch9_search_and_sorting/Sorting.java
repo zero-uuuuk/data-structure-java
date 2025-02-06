@@ -154,7 +154,6 @@ public class Sorting {
         for(int i=0; i<arrayA.length; i++){
             arrayC[arrayA[i]] += 1;
         }
-
         // Express arrayC in prefix sum
         for(int i=1; i<k; i++)
         {

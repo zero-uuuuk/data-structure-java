@@ -1,0 +1,81 @@
+Hash Table
+
+1. Introduction
+- 기존에 사용하던 방식인 'Direct Addressing(Index == KEY)'의 문제가 있음.
+    - 불필요한 Memory 가 많이 사용된다는 것.
+    - Ex) T[1000]을 선언 후, 실제로 value 를 두 번만 할당하면, 나머지 메모리는 다 낭비가 됌.
+
+    - 키 값이 매우크거나, 키가 String 일 경우 사용하기 어려움.
+    - Ex) T["name"] ?? 은 사용할 수 없음.
+
+- 이러한 단점을 개선시킨 것이 Hash Table 임.
+
+ref) Dynamic Set
+- 요소 set 의 크기를 가변적으로 설정 가능.
+- 예를 들어 LinkedList, Vector, Heap 등.
+- 메모리 효율성 증가.
+
+2. Hash table
+(1). 기초 설명
+- Hash table 은 key-value 의 쌍으로 존재. (=dictionary in Python)
+- 특정 key 가 주어질 때, hash function 으로 적절한 위치(index)를 찾고 실제 Hash table 에 접근함.
+    - Ex) h(x) = x.length
+          T["Tom"] = T[h("Tom")] = T[3] 으로 처리됌.
+- h(x) is the hash value of key k.
+
+(2). Collision
+- Hash function 의 값이 동일할 경우 충돌 발생.
+    - Ex) h(x) = x.length
+          T["Tom"] = T[h("Tom")] = T[3]
+          T["Sam"] = T[h("Sam")] = T[3]
+
+- Good Hash Function
+    - Minimize collision.
+    - Use the information provided in the key.
+    - Easy, Quick to compute.
+    - Recommended: 나머지 연산
+        - h(x) = x % (tableSize), 이때 tableSize 는 소수(7, 17..)일 것.
+
+(3). Collision 발생 시 해결법
+i. Separate chaining
+- 동일한 location 일 경우, 내부에 LinkedList 를 만들어 연결.
+- 추가적인 자료구조와 time-complexity 발생.
+
+ii. Open Addressing(Closed Hashing)
+- 이미 location 을 다른 값이 점유하고 있다면, hash-function 을 재계산.
+- Linear probing: h-i(x) = (h(x) + i) % tableSize
+- Quadratic probing: h-i(x) = (h(x) + i^2) % tableSize
+    - Primary clustering: 이미 점유된 슬롯이 연속적으로 이어짐.
+    - Secondary clustering: 충돌 시 동일한 탐색 경로를 반복함.
+    - 그래도 둘은 계산 시 빠르다는 장점이 있음.
+    - 또한 load factor(점유율)이 낮을 경우 차이가 거의 없음.
+- Double hashing: Combine two hash function.
+
+(4). Search and Delete
+i. Search
+- Insertion 한 경로를 그대로 따라감.
+
+ii. Delete
+- 마찬가지로 경로를 따라가되, 값을 지우는 것이 아닌(점유를 해제하는 것이 아닌) `DEL`이라는 상수 값 부여.
+- 이는 추후에 Search, Insertion 이 동일한 probing step 을 밟도록 유도하기 위함.
+
+(5). Time complexity(same to Insertion, Search, Deletion)
+- Average: O(1), Worst: O(n)
+- 대신 메모리 사용량이 굉장히 효율적!
+
+(6). Takeaways
+- Hash table 은 find min / find max / Sorting 을 지원하지 않음.
+- 허나 stack, queue 등과 다르게 search operation 이 가능함.
+- 주로 key -> value 조회가 요구되는 곳에 사용.
+    - 119: phone number(key) -> address(value) 파악.
+    - Flight: Flight number(key) -> Flight Information(value).
+    - 주민등록: Residence registration(key) -> Person Information(value).
+
+
+3. Extendable Hashing
+- Hash Table 이 메모리 크기를 초과해, Disk access(super expensive) 이 불가피 할 경우 사용.
+- 이때 각 Disk 를 'Bucket' 으로 나누어 효율적으로 관리함.
+- (1). Memory 에 Disk location 의 정보를 담은 Directory 저장.
+- (2). Key -> Directory -> Disk access 순으로 작동.
+
+
