@@ -1,0 +1,86 @@
+1. Red-Black Tree
+
+(1). Introduction
+- Self-balancing binary search tree: LL, RR rotation 사용, 대소관계(ordering) 유지
+- Do not ensure strict balancing(unlike AVL trees):
+    Require less memory and re-balance faster. Used when tree will be modified frequently.
+    AVL tree re-balance when height-difference is 2.
+    Red-Black allows at most twice of max-min height.
+- Used in TreeMap, TreeSet
+
+(2). Properties
+- Every node is either red or black.
+- The root is black.
+- Leaves are black and NULL nodes.
+- Every red node must have two black children: No more than half the nodes in a path can be red.
+- Every path from a node to a leaf has the same number of black nodes:
+    Min-red path: total b nodes.
+    Max-red path: total 2b nodes.
+- Sufficient to ensure the O(log n) runtime.(Insertion, Search, Deletion)
+
+(3). Insertion
+- When insert a new node, two violations happen:
+    Black violation: One path has more blacks than another path.
+    Red violation: A red node has a red child.
+- In the case parent and new node are red and grandparent is black, let's insert new node.
+
+i. U(uncle) is red
+- Change G(B) -> G(R), P(R), U(R) -> P(B), U(B).
+- Recursive if G occurs red-violation.
+
+ii. U(uncle) is black(이때, black-violation 없이 red-violation 만 고려해서 해결)
+A. U is black and LL(Both P and N are left children)
+- LL rotation to P
+- Change color: P(R) -> P(B), G(B) -> G(R).
+
+B. U is black and LR(P is left, N is right child)
+- RR rotation to R
+- LL rotation to N
+- Change color: N(R) -> N(B), G(B) -> G(R).
+
+C. U is black and LL
+- Mirror case at A.
+
+D. U is black and RL
+- Mirror case at B.
+
+2. Prefix Trees
+(1). Introduction
+- Tree-based data structure for storing strings.
+- O(l) runtime in insert, find, and delete(l is the length of word)
+
+(2). Properties
+- The children of an internal node have distinct labels.
+- A leaf represents a string of S: Concatenation of the labels of the nodes yields the string of S.
+- There can be duplication in one path.
+- Height of tree: The length of the longest string.
+
+(3). Takeaways
+- Fast, Use Much memory to store strings.
+- Usage in '자동완성', '사전검색' ...
+
+3. Bloom Filters
+(1). Introduction
+- Tell that the element either definitely is not in the set or may be in the set.
+- Main operation:
+    insert(x)
+    lookup(x): Tell is not in the set or may be in the set(false positive probability)
+
+(2). How?
+- Store value into the bit array(0->1) using hash functions.
+- If a location is zero, it means definitely no value.
+- Value 를 저장하는 과정에서, function 값이 동일할 수 있기에 특정 bit 는 여러 번 활성화됌.
+- Bloom filter erroneously claim that "pig" is present.
+    False Positive(있을 것이라 잘못 예측한 것)의 확률이 클수록 신뢰성 하락.
+    False Negative(없을 것이라 잘못 예측한 것) -> 이럴 일은 없음. 무조건 없기에.
+    Probability of False Positives 는 PDF 참고.
+
+(3). Takeaways
+- Benefit:
+    Space-efficient
+    O(k, the number of hash functions) time to insert and lookup.
+- Downsides:
+    False positive(But controllable)
+    Deleting elements is not possible. (다른 값도 같이 지워버릴 수 있기에)
+- Usage:
+    존재하지 않는 걸 빠르게 filtering 해야할 때 유용함.
